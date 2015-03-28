@@ -1,4 +1,4 @@
-# Makefile for accesio.so
+# Makefile for aiousb.so
 #
 # Shared object library to control ACCES I/O USB interfaces under IDL
 #
@@ -7,8 +7,9 @@
 # 11/14/2011 DGG Updated to global install
 # 01/28/2013 DGG Updated paths
 # 01/30/2013 DGG updated for IDL based build
+# 03/27/2015 DGG updated for DLM version
 #
-TARGET = accesio
+TARGET = aiousb
 FILES = $(TARGET).c
 DESTINATION = lib
 
@@ -18,7 +19,7 @@ INSTALL = install
 all: $(TARGET).so
 
 $(TARGET).so: $(FILES)
-	@$(IDL) compile_accesio
+	@$(IDL) compile_aiousb
 
 install: all
 	sudo $(INSTALL) -d $(DESTINATION)
