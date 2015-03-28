@@ -172,24 +172,23 @@ void IDL_CDECL aiousb_setdacrange(int argc, IDL_VPTR argv[])
 // argv[1]: IN channel number
 // argv[2]: IN value: range 0 to 1 (full-scale)
 //
-aiousb_setdacvalue(int argc, char **argv)
+void IDL_CDECL aiousb_setdacvalue(int argc, char **argv)
 {
   unsigned long result;
   unsigned long device;
   unsigned short channel;
   float value;
 
-  device = *(IDL_ULONG *) argv[0];
-  channel = *(IDL_UINT *) argv[1];
-  value = *(float *) argv[2];
+  device = IDL_ULongScalar(argv[0]);
+  channel = (unsigned short) IDL_ULongScalar(argv[1]);
+  value = (float) IDL_DoubleScalar(argv[2]);
 
   result = DACDirect(device, channel, 
 		     (unsigned short) (value * (float) 0xffff));
   if (result != AIOUSB_SUCCESS) {
-    printf("AIOUSB Error: %s\n", AIOUSB_GetResultCodeAsString(result));
+    IDL_Message(IDL_M_NAMED_GENERIC, IDL_MSG_LONGJMP,
+		AIOUSB_GetResultCodeAsString(result));
   }
-   
-  return result;
 }
 
 //
@@ -209,6 +208,7 @@ int IDL_Load(void)
   static IDL_SYSFUN_DEF2 procedure_addr[] = {
     { aiousb_exit, "AIOUSB_EXIT", 0, 0, 0, 0 },
     { aiousb_setdacrange, "AIOUSB_SETDACRANGE", 2, 2, 0, 0 },
+    { aiousb_setdacvalue, "AIOUSB_SETDACVALUE", 3, 3, 0, 0 },
   };
 
   nfcns = IDL_CARRAY_ELTS(function_addr);
