@@ -10,24 +10,32 @@
 # 03/27/2015 DGG updated for DLM version
 #
 TARGET = aiousb
-FILES = $(TARGET).c
-DESTINATION = lib
+SRC = $(TARGET).c
+
+SYS  = $(shell uname -s | tr '[:upper:]' '[:lower:]')
+ARCH = $(shell uname -m)
+LIBRARY = $(TARGET).$(SYS).$(ARCH).so
+
+DLM = $(TARGET).dlm
 
 IDL = idl -quiet
 INSTALL = install
 
-all: $(TARGET).so
+DESTINATION = lib
 
-$(TARGET).so: $(FILES)
-	@$(IDL) compile_aiousb
+all: $(LIBRARY)
 
-install: all
+$(LIBRARY): $(SRC)
+	@mkdir build 2>/dev/null ||:
+	@$(IDL) compile_$(TARGET)
+
+install: $(LIBRARY) $(DLM)
 	sudo $(INSTALL) -d $(DESTINATION)
-	sudo $(INSTALL) build/$(TARGET).so $(DESTINATION)
+	sudo $(INSTALL) $(LIBRARY) $(DLM) $(DESTINATION)
 
 uninstall:
-	sudo rm $(DESTINATION)/$(TARGET).so
-	sudo rm $(DESTINATION)
+	sudo rm -rf $(DESTINATION)
 
 clean:
-	@rm core $(OBJS) $(TARGET).so *~
+	-rm $(LIBRARY)
+	-rm build
