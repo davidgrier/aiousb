@@ -1,5 +1,5 @@
 //
-// accesio.c
+// aiousb.c
 //
 // IDL-callable interface for ACCES I/O devices.
 //
@@ -57,25 +57,25 @@ IDL_VPTR IDL_CDECL aiousb_getdeviceproperties(int argc, IDL_VPTR argv[])
   struct idlDeviceProperties {
     IDL_STRING name;
     IDL_ULONG64 serialnumber;
-    IDL_UINT dioports;
-    IDL_UINT counters;
-    IDL_UINT tristates;
+    IDL_ULONG dioports;
+    IDL_ULONG counters;
+    IDL_ULONG tristates;
     IDL_LONG rootclock;
-    IDL_UINT dacchannels;
-    IDL_UINT adcchannels;
-    IDL_UINT adcmuxchannels;
+    IDL_ULONG dacchannels;
+    IDL_ULONG adcchannels;
+    IDL_ULONG adcmuxchannels;
   };
   struct idlDeviceProperties *idl_properties;
   static IDL_STRUCT_TAG_DEF tags[] = {
     { "NAME",           0, (void *) IDL_TYP_STRING  },
     { "SERIALNUMBER",   0, (void *) IDL_TYP_ULONG64 },
-    { "DIOPORTS",       0, (void *) IDL_TYP_UINT    },
-    { "COUNTERS",       0, (void *) IDL_TYP_UINT    },
-    { "TRISTATES",      0, (void *) IDL_TYP_UINT    },
+    { "DIOPORTS",       0, (void *) IDL_TYP_ULONG    },
+    { "COUNTERS",       0, (void *) IDL_TYP_ULONG    },
+    { "TRISTATES",      0, (void *) IDL_TYP_ULONG    },
     { "ROOTCLOCK",      0, (void *) IDL_TYP_LONG    },
-    { "DACCHANNELS",    0, (void *) IDL_TYP_UINT    },
-    { "ADCCHANNELS",    0, (void *) IDL_TYP_UINT    },
-    { "ADCMUXCHANNELS", 0, (void *) IDL_TYP_UINT    },
+    { "DACCHANNELS",    0, (void *) IDL_TYP_ULONG    },
+    { "ADCCHANNELS",    0, (void *) IDL_TYP_ULONG    },
+    { "ADCMUXCHANNELS", 0, (void *) IDL_TYP_ULONG    },
     { 0 }
   };
   IDL_StructDefPtr sdef = IDL_MakeStruct("properties", tags);
@@ -86,13 +86,13 @@ IDL_VPTR IDL_CDECL aiousb_getdeviceproperties(int argc, IDL_VPTR argv[])
   if (result == AIOUSB_SUCCESS) {
     IDL_StrStore(&(idl_properties->name), properties.Name);
     idl_properties->serialnumber = (IDL_ULONG64) properties.SerialNumber;
-    idl_properties->dioports = (IDL_UINT) properties.DIOPorts;
-    idl_properties->counters = (IDL_UINT) properties.Counters;
-    idl_properties->tristates = (IDL_UINT) properties.Tristates;
+    idl_properties->dioports = (IDL_ULONG) properties.DIOPorts;
+    idl_properties->counters = (IDL_ULONG) properties.Counters;
+    idl_properties->tristates = (IDL_ULONG) properties.Tristates;
     idl_properties->rootclock = (IDL_LONG) properties.RootClock;
-    idl_properties->dacchannels = (IDL_UINT) properties.DACChannels;
-    idl_properties->adcchannels = (IDL_UINT) properties.ADCChannels;
-    idl_properties->adcmuxchannels = (IDL_UINT) properties.ADCMUXChannels;
+    idl_properties->dacchannels = (IDL_ULONG) properties.DACChannels;
+    idl_properties->adcchannels = (IDL_ULONG) properties.ADCChannels;
+    idl_properties->adcmuxchannels = (IDL_ULONG) properties.ADCMUXChannels;
   } else {
     IDL_Message(IDL_M_NAMED_GENERIC, IDL_MSG_LONGJMP,
 		AIOUSB_GetResultCodeAsString(result));
@@ -112,25 +112,24 @@ IDL_VPTR IDL_CDECL aiousb_getdeviceproperties(int argc, IDL_VPTR argv[])
 // argv[0]: IN device number
 // argv[1]: IN/OPTIONAL timeout interval in milliseconds
 //
-unsigned IDL_STDCALL
-aiousb_commtimeout(int argc, char **argv)
+IDL_VPTR IDL_CDECL aiousb_commtimeout(int argc, IDL_VPTR argv[])
 {
-  unsigned long result;
   unsigned long device;
   unsigned timeout;
-
-  device = *(IDL_ULONG *) argv[0];
+  unsigned long result;
+  
+  device = IDL_ULongScalar(argv[0]);
 
   if (argc == 2) {
-    timeout = *(IDL_UINT *) argv[1];
+    timeout = IDL_ULongScalar(argv[1]);
     result = AIOUSB_SetCommTimeout(device, timeout);
     if (result != AIOUSB_SUCCESS) {
-      printf("AIOUSB Error: %s\n", AIOUSB_GetResultCodeAsString(result));
-      return -1;
+      IDL_Message(IDL_M_NAMED_GENERIC, IDL_MSG_LONGJMP,
+		  AIOUSB_GetResultCodeAsString(result));
     }
   }
 
-  return AIOUSB_GetCommTimeout(device);
+  return IDL_GettmpULong(AIOUSB_GetCommTimeout(device));
 }
 
 //
