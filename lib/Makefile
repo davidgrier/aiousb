@@ -1,4 +1,4 @@
-# Makefile for aiousb.so
+# Makefile for aiousbo
 #
 # Shared object library to control ACCES I/O USB interfaces under IDL
 #
@@ -8,6 +8,8 @@
 # 01/28/2013 DGG Updated paths
 # 01/30/2013 DGG updated for IDL based build
 # 03/27/2015 DGG updated for DLM version
+#
+# Copyright (c) 2015 David G. Grier
 #
 TARGET = aiousb
 SRC = $(TARGET).c
