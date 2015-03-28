@@ -16,10 +16,10 @@ manufactures I/O modules.
 This package provides an IDL interface for the category
 of ACCES I/O modules that are connected to host computers through
 a USB bus.
-The preferred interface is through the `DGGhwACCESIO`
+The preferred interface is through the `DGGhwAIOusb`
 object:
 
-    module = DGGhwACCESIO()
+    module = DGGhwAIOusb()
 
 To use this package, make sure that the environment variables
 `IDL_PATH` and `IDL_DLM_PATH` include `/usr/local/IDL/accesio`.
