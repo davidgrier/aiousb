@@ -145,22 +145,20 @@ IDL_VPTR IDL_CDECL aiousb_commtimeout(int argc, IDL_VPTR argv[])
 //          2: 0 to 10V
 //          3: -10 to 10V
 //
-unsigned IDL_STDCALL
-aiousb_setdacrange(int argc, char **argv)
+void IDL_CDECL aiousb_setdacrange(int argc, IDL_VPTR argv[])
 {
-  unsigned long result;
   unsigned long device;
   int range;
+  unsigned long result;
 
-  device = *(IDL_ULONG *) argv[0];
-  range = *(IDL_INT *) argv[1];
-  
+  device = IDL_ULongScalar(argv[0]);
+  range = IDL_LongScalar(argv[1]);
+
   result = DACSetBoardRange(device, range);
   if (result != AIOUSB_SUCCESS) {
-    printf("AIOUSB Error: %s\n", AIOUSB_GetResultCodeAsString(result));
+    IDL_Message(IDL_M_NAMED_GENERIC, IDL_MSG_LONGJMP,
+		AIOUSB_GetResultCodeAsString(result));
   }
-
-  return result;
 }
 
 //
@@ -205,10 +203,12 @@ int IDL_Load(void)
   static IDL_SYSFUN_DEF2 function_addr[] = {
     { aiousb_init, "AIOUSB_INIT", 0, 0, 0, 0 },
     { aiousb_getdeviceproperties, "AIOUSB_GETDEVICEPROPERTIES", 1, 1, 0, 0 },
+    { aiousb_commtimeout, "AIOUSB_COMMTIMEOUT", 1, 2, 0, 0 },
   };
 
   static IDL_SYSFUN_DEF2 procedure_addr[] = {
     { aiousb_exit, "AIOUSB_EXIT", 0, 0, 0, 0 },
+    { aiousb_setdacrange, "AIOUSB_SETDACRANGE", 2, 2, 0, 0 },
   };
 
   nfcns = IDL_CARRAY_ELTS(function_addr);
