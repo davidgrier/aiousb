@@ -1,4 +1,4 @@
-# Makefile for aiousb.so
+# Makefile for aiousbo
 #
 # Shared object library to control ACCES I/O USB interfaces under IDL
 #

@@ -1,4 +1,4 @@
-# Makefile for accesio.so
+# Makefile for aiousb
 #
 # Shared object library to control ACCES I/O USB interfaces under IDL
 #
@@ -7,14 +7,11 @@
 # 11/14/2011 DGG Updated to global install
 # 01/28/2013 DGG Updated paths
 # 01/30/2013 DGG updated for IDL based build
+# 03/27/2015 DGG updated for DLM
 #
-FILES = aiousb_commtimeout.pro \
- aiousb_exit.pro \
- aiousb_getdevice.pro \
- aiousb_init.pro \
- aiousb_isdevice.pro \
- aiousb_setdacrange.pro \
- aiousb_setdacvalue.pro
+# Copyright (c) 2010-2015 David G. Grier
+#
+FILES = dgghwaiousb__define.pro
 
 INSTALL = install
 DESTINATION = pro
