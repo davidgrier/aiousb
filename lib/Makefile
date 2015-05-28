@@ -9,6 +9,8 @@
 # 01/30/2013 DGG updated for IDL based build
 # 03/27/2015 DGG updated for DLM version
 #
+# Copyright (c) 2010-2015 David G. Grier
+#
 TARGET = aiousb
 SRC = $(TARGET).c
 

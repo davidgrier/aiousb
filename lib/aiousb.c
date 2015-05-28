@@ -152,9 +152,10 @@ void IDL_CDECL aiousb_setdacrange(int argc, IDL_VPTR argv[])
   unsigned long result;
 
   device = IDL_ULongScalar(argv[0]);
-  range = IDL_LongScalar(argv[1]);
+  range = IDL_ULongScalar(argv[1]);
+  fprintf(stderr,"%d\n", range);
 
-  result = DACSetBoardRange(device, range);
+  result = DACSetBoardRange(device, DAC_RANGE_0_5V);
   if (result != AIOUSB_SUCCESS) {
     IDL_Message(IDL_M_NAMED_GENERIC, IDL_MSG_LONGJMP,
 		AIOUSB_GetResultCodeAsString(result));

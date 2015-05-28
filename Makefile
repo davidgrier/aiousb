@@ -1,17 +1,18 @@
-PRODIR = /usr/local/IDL/accesio
-LIBDIR = /usr/local/lib
+IDLDIR = /usr/local/IDL
+PRODIR = $(IDLDIR)/accesio
+LIBDIR = $(PRODIR)
 
 all:
 	make -C lib
 
 install: all
-	make -C idl install DESTINATION=$(PRODIR)
+#	make -C idl install DESTINATION=$(PRODIR)
 	make -C lib install DESTINATION=$(LIBDIR)
 
 uninstall:
-	make -C idl uninstall DESTINATION=$(PRODIR)
+#	make -C idl uninstall DESTINATION=$(PRODIR)
 	make -C lib uninstall DESTINATION=$(LIBDIR)
 
 clean:
-	make -C idl clean
+#	make -C idl clean
 	make -C lib clean
